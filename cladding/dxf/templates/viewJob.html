@@ -1,0 +1,192 @@
+<?php
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+
+
+{% include 'header.html' %}
+{% include 'sideBar.html' %}
+
+<style>
+    td, th {
+        vertical-align: middle;
+    }
+
+    tr > td:last-of-type {
+        width: 12%;
+    }
+</style>
+<div class="col-md-9 col-lg-10">
+    <div class="row" id="jobForm">
+        <h1>Job Details</h1>
+        <div class="row">
+        {%if job.state == '1' %}
+        <form class="needs-validation" novalidate="" method="POST" enctype="multipart/form-data" action="./{{job.id}}" > {%csrf_token%}
+        {% endif %}
+            {% include 'job.html' %}
+            <div class="mb-3 col-lg-3">
+                <label for="totalParts">Total Parts</label>
+                <input type="text" id="totalParts" class=" form-control d-inline"
+                       value="{{ parts|length }}" disabled>
+            </div>
+
+        </div>
+    </div>
+
+    <hr class="m-b-3">
+    {%if job.state == '1' %}
+        <div style="margin-bottom: 1.3rem">
+            <button id="newJob" class="btn btn-success d-block d-sm-inline-block"
+                type="submit">
+                <i class="fa fa-save"></i>
+                save
+            </button>
+        </form>
+        
+        </div>
+        <hr class="m-b-3">
+        <div style="margin-bottom: 1.3rem">
+        <form action="../parthandler/{{job.id}}" method="POST"> {% csrf_token %}
+            {% include 'partform.html' %}
+
+            <input type="hidden" name="aim" value="new">
+            <input type="hidden" name="id" value="{{job.id}}">
+            <button  class="btn btn-success d-block d-sm-inline-block" type="submit"  ><i class="fa fa-plus"></i>New Part</button>
+        </form>
+        </div>
+        <hr class="m-b-3">
+        <hr class="m-b-3">
+
+    {%endif%}
+
+    <div class="row">
+        <div class="col-sm-12 table-responsive">
+            <table class="table table-striped w-100" id="parts">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>quantity</th>
+                    <th>Area</th>
+                    <th>total area</th>
+                    {%if job.state == '1' %}
+                        <th>Actions</th>
+                    {% else %} 
+                        <th>State</th>
+                        <th>Download</th>
+                    {% endif %} 
+                    
+                </tr>
+                </thead>
+                <tbody>
+                {% for part in parts %}
+                    <tr >
+                    <td>{{part.Name}}</td>
+                    <td>{{part.type}}</td>
+                    <td>{{part.qty}}</td>
+                    <td>{{part.area}}</td>
+                    <td>{{part.Total_area}}</td>
+
+                {%if job.state == '1'%}
+                    {%if part.state == '1' %}
+                    <td >
+                    <form action="../parthandler/{{job.id}}" method="POST"> {% csrf_token %}
+                        <input type="hidden" name="aim" value="edit">
+                        <input type="hidden" name="id" value="{{part.id}}">
+                        <button  class="btn btn-primary" type="submit"><i class="far fa-edit"></i></button>
+                    </form>
+                    <form action="../parthandler/{{job.id}}" method="POST"> {% csrf_token %}
+                        <input type="hidden" name="aim" value="delete">
+                        <input type="hidden" name="id" value="{{part.id}}">
+                        <button  class="btn btn-danger" type="submit"  ><i class="fas fa-trash"></i></button>
+                    </form>
+                    </td>
+                    </div>
+                    {%endif%}
+                {% else %} 
+                    
+                    {%if part.state == '3' %}
+                        <td></td>
+                        <td><a class='btn btn-success' href='../../download/{{part.id}}'> Download Part</a></td>
+                    {% elif  part.state == '4' %} 
+                        <td><span class='text-sm-center text-secondary' ><p style="color:#FF0000;">Failed</p> </span></td>
+                        <td></td>
+                    {% else%} 
+                        <td></td>
+                        <td><span class='text-sm-center text-secondary' style='font-size: 0.8rem'>Link will be available soon whenever server is done</span></td>
+                    {%endif%}
+                
+                
+                {%endif%}
+                {%endfor%}
+            </tr>
+
+
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+    
+    {%if job.state == '2' %}
+        
+        <hr class="mb-2 mt-3">
+        <div class="row mb-2">
+            <span class="alert alert-info">Working: download link will be available soon</span>
+        </div>    
+    {%elif job.state == '4' %}
+        <hr class="mb-2 mt-3">
+        <div class="row mb-2">
+            <span class="alert alert-info" style="color: #FF0000;">Failed to make all parts</span>
+        </div>
+    {%elif job.state == '3' or job.state == '5'%}
+        <hr class="mb-2 mt-3">
+        <div class="row mb-2">
+            <span class="alert alert-info">Excel file contains all details about job will be added into the Job file</span>
+        </div>
+        <div class="d-flex justify-content-evenly mb-5">
+            <a class="btn btn-success" href="../../downloadjob/{{job.id}}">Download The Whole Job</a>
+        </div>
+
+    {%elif job.state == '5' or job.state == '1' %}
+        <hr class="mb-4 mt-3">
+        <div class="d-flex justify-content-evenly mb-5">
+            <form id="startForm" action="../jobhandler/{{job.id}}" method="POST"> {% csrf_token %}
+                <input type="hidden" name="aim" value="start">
+                <input type="hidden" name="id" value="{{job.id}}">
+                <button class="btn btn-success d-block d-sm-inline-block">
+                    <i class="fa fa-plus"></i>
+                    Start Job
+                </button>
+            </form>
+            <form action="../jobhandler/{{job.id}}" method="POST"> {% csrf_token %}
+                <input type="hidden" name="aim" value="remove">
+                <input type="hidden" name="id" value="{{job.id}}">
+                <button class="btn btn-danger m-l-3" type="submit">
+                    <i class="fa fa-trash"></i>
+                    Remove Job
+                </button>
+            </form>
+        </div>
+    {%endif%}
+
+    <form id="startForm" action="../jobhandler/{{job.id}}" method="POST"> {% csrf_token %}
+        <input type="hidden" name="aim" value="start">
+        <input type="hidden" name="id" value="{{job.id}}">
+        <button class="btn btn-success d-block d-sm-inline-block">
+            <i class="fa fa-plus"></i>
+            Start Job
+        </button>
+
+{% include 'footer.html' %}
+<script>
+    let jobID = {{job.id}}
+</script>
+{% load static%}
+<script src="{% static 'css/js/app/viewJob.js' %}"></script>
+</body>
+</html>
+{% endblock %}

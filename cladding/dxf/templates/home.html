@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'header.html' %}
+{% include 'sideBar.html' %}
+
+<style>
+    tr {
+        cursor: pointer;
+    }
+</style>
+{% load static %}
+<link rel="stylesheet" href="{%  static 'css/dataTables.bootstrap.css'%}"/>
+<div class="col-md-9 col-lg-10">
+
+    <div class="row">
+        <div class="col-xl-4 col-md-8 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Jobs
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{jobs}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-briefcase fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-8 mb-4">
+            <div class="card border-left-secondary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Parts
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{parts}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas  fa-building fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-md-8 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Area
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{area}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas  fa-building fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="jobs">
+        <hr>
+        <div style="margin-bottom: 1.3rem">
+            <a class="btn btn-success d-block d-sm-inline-block"
+               href="newjob/">
+                <i class="fa fa-plus"></i>
+                New Job
+            </a>
+        </div>
+        <h2 class="display-4" style="margin-top:0.8rem;">Latest 5 Jobs</h2>
+        <div class="col-sm-12 table-responsive">
+            <table class="table table-striped w-100" id="jobs-list">
+                <thead>
+                <tr>
+                    <th>Job Number</th>
+                    <th>Date</th>
+                    <th>Project</th>
+                    <th>client</th>
+                    <th>State</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for job in job_list%}
+                    <tr role=\"row\" dms='{{job.id}}'>
+                    <td>{{job.job_no}}</td>
+                    <td>{{job.Creation_date}}</td>
+                    <td>{{job.project}}</td>
+                    <td>{{job.client}}</td>
+                    <td>{{job.state}}</td>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+
+<script>
+    $(document).ready(function () {
+        let table = $('#jobs-list').DataTable({searching: false, paging: false, info: false});
+
+        table.on('click', 'tbody tr', function () {
+            let jobID = $(this).attr("dms");
+            window.location.href = `job/${jobID}`;
+        })
+    });
+
+</script>
+
+</body>
+</html>
+
+<input  class="form-control d-block w-100" id="jobNumber" name="jobNumber"
+               required=""disabled  
+               value="<?php if (isset($jobNumber)) echo $jobNumber ?>">
+
+{% endblock %}

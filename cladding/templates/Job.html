@@ -1,0 +1,98 @@
+
+<div class="row">
+    <div class="col-md-6 mb-2">
+        <label for="jobNumber">Job Number</label>
+        <input class="form-control d-block w-100" id="jobNumber" name="job_no" required="" {{disabled}} value='{{job.job_no}}'>
+        <div class="invalid-feedback"> Job number is required.</div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label for="material">Material</label>
+        <input class="form-control d-block w-100" id="material" name="material" required="" {{disabled}} value='{{job.material}}'>
+        <div class="invalid-feedback">Material is required.</div>
+    </div>
+
+    <div class="mb-3 col-md-6">
+        <label for="project">Project</label>
+        <input type="text" class="form-control" id="project" name="project" required="" {{disabled}} value='{{job.project}}'>
+        <div class="invalid-feedback" style="width: 100%;"> project is required.</div>
+    </div>
+    <div class="mb-3 col-md-6">
+        <label for="color">Color</label>
+        <input type="text" class="form-control" id="color" name="color" required="" {{disabled}} value='{{job.color}}'>
+        <div class="invalid-feedback" style="width: 100%;"> Color is required.</div>
+    </div>
+</div>
+<div class="mb-3">
+    <label for="client">Client </label>
+    <input type="text" class="form-control" name="client" id="client" required="" {{disabled}} value='{{job.client}}'>
+    <div class="invalid-feedback"> Client is required.</div>
+</div>
+<div class="row">
+    <div class="mb-3 col-md-6">
+        <label for="edgeDistance">Edge Distance</label>
+        <input type="number" step=".01" class="form-control" name="edge_distance" id="edge_distance" required="" {{disabled}} value= {{job.edge_distance}}>
+        <div class="invalid-feedback"> Please enter Valid Edge Distance.</div>
+    </div>
+    <div class="mb-3 col-md-6">
+        <label for="maxDistance">Max Distance</label>
+        <input type="number" step=".01" class="form-control" name="max_distance" id="max_distance" required="" {{disabled}} value= {{job.max_distance}}>
+        <div class="invalid-feedback"> Please enter Valid Max Distance.</div>
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-md-6 mb-2">
+        <label for="maxStiffenerDistance">Max Stiffener Distance</label>
+        <input class="form-control d-block w-100" id="maxStiffenerDistance" name="max_stiffner_distance"
+               type="number"
+               step=".01"
+               required="" {{disabled}} value= {{job.max_stiffner_distance}}>
+        <div class="invalid-feedback"> Please Enter valid max stiffener type.</div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="stiffenerType">Stiffener Type</label>
+        <input class="form-control d-block w-100" id="stiffenerType" name="stiffner_type"
+                required="" {{disabled}} value='{{job.stiffner_type}}'>
+        <div class="invalid-feedback"> Please Enter valid stiffener type.</div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-2">
+        <label for="Stiffenerblock"> Stiffener block </label>
+        <select  class="form-control d-block w-100" id="sttifner_block" name="sttifner_block" required="" {{disabled}} value='{{job.sttifner_block}}'>
+            <option value="big"> big </option>
+            <option value="small"> small </option>
+        </select>
+        <div class="invalid-feedback"> Stiffener block</div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label for="angle plan block">angle plan block</label>
+        <select  class="form-control d-block w-100" id="angle_plan_block" name="angle_plan_block" required="" {{disabled}} value='{{job.angle_plan_block}}'>
+            <option value="big"> big </option>
+            <option value="small"> small </option>
+        </select>
+        <div class="invalid-feedback"> Please Enter valid  angle plan block.</div>
+</div>
+
+
+<div class="mb-2 col-md-6">
+        <div class="form-group">
+            <label class="form-check-label" for="approved">
+                Approved
+            </label>
+            <input class="form-control" type="text" value='{{job.approved}}'
+                   name="approved" id="approved" required="" {{disabled}}>
+            <div class="invalid-feedback"> Please Enter who approved job.</div>
+        </div>
+    </div>
+    <div class="mb-2 col-md-6">
+        <label class="form-check-label" for="checked">
+            Checked
+        </label>
+        <input class="form-control" type="text" value='{{job.checked}}'
+               name="checked" id="checked"  required="" {{disabled}}>
+            <div class="invalid-feedback"> Please Enter who checked job.</div>
+        
+</div>
+

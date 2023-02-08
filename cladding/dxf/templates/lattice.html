@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% include 'header.html' %}
+{% include 'sideBar.html' %}
+
+<div class="col-md-9 col-lg-10">
+    <h1> Welcome to our new lattice slicing app </h1>
+    <h5> -- you can add a job by uploading dxf file containing polylines of parts with its name inside </h5>
+    <h5> -- we gonna take all the info we need to make each part in seperate file</h5>
+    <h5> -- you can add an excel file with the other data with parts names </h5>
+    <hr class="mb-4">
+
+    
+    <div class="row">
+        <form class="needs-validation" novalidate="" method="POST" enctype="multipart/form-data" action="." > {%csrf_token%}
+            
+            {% include 'JobForm.html' %}
+
+            <hr class="mb-4">
+            <h4 class="mb-3">dxf</h4>
+            <div class="form-group mb-3">
+                <label class="form-label" for="uploadParts">Upload dxf File</label>
+                <input type="file" class="form-control" id="uploaddxf" name="uploaddxf" required/>
+                <div class="invalid-feedback">upload file first of dxf data
+                    <a href="../sample.dxf" class="alert-link">Click here</a>
+                        to download example file
+                </div>
+            </div>
+            
+            <hr class="mb-4">
+            <h4 class="mb-3">Parts</h4>
+            <div class="form-group mb-3">
+                <label class="form-label" for="uploadParts">Upload Parts File</label>
+                <input type="file" class="form-control" id="uploadParts" name="uploadParts" required/>
+                <div class="invalid-feedback">upload file first of parts data
+                    <a href="../sample.xlsx" class="alert-link">Click here</a>
+                        to download example file
+                </div>
+            </div>
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block mb-3" type="submit">Create New Job</button>
+        </form>
+    </div>
+</div>
+
+
+{% include 'footer.html' %}
+
+<script>
+
+
+    let forms = document.getElementsByClassName('needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.filter.call(forms, function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+
+
+</script>
+
+</body>
+</html>
+
+{% endblock %}
